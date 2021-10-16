@@ -7,6 +7,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.commons.io.FilenameUtils;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.*;
 import java.util.function.Predicate;
@@ -29,15 +31,62 @@ public class Decompiler {
 		if(!unpackedBase.exists()) return;
 		File[] files = unpackedBase.listFiles();
 		if(files == null) return;
-		decompileLua(Arrays.stream(files).filter(LUAC_FILTER).toArray(File[]::new));
-		decompileDatasheets(Arrays.stream(files).filter(DATASHEET_FILTER).toArray(File[]::new));
+//		decompileLua(Arrays.stream(files).filter(LUAC_FILTER).toArray(File[]::new));
+//		decompileDatasheets(Arrays.stream(files).filter(DATASHEET_FILTER).toArray(File[]::new));
+		decompileDDS(Arrays.stream(files).filter(DDS_FILTER).toArray(File[]::new));
 
 	}
 
 	public static Predicate<File> LUAC_FILTER = f -> f.isDirectory() || FilenameUtils.getExtension(f.getName()).equals("luac");
 	public static Predicate<File> DATASHEET_FILTER = f -> f.isDirectory() || FilenameUtils.getExtension(f.getName()).equals("datasheet");
+	public static Predicate<File> DDS_FILTER = f -> f.isDirectory() || FilenameUtils.getExtension(f.getName()).equals("dds");
 
 	public record StringData(byte[] hash, int offset) {}
+
+	public static String findImage(String name) {
+		for(File file : new File(DECOMPILED_BASE_PATH).listFiles()) {
+			
+		}
+	}
+
+	public static void decompileDDS(File[] files) {
+		for(File file : files) {
+			if (!file.exists()) continue;
+			if (file.isDirectory()) {
+				File[] subFiles = file.listFiles();
+				if (subFiles == null) continue;
+				decompileDDS(Arrays.stream(subFiles).filter(DDS_FILTER).toArray(File[]::new));
+				continue;
+			}
+			try {
+
+				BufferedImage image = ImageIO.read(file);
+				if(image == null) {
+					System.err.println("Unable to read file: "+file.getPath());
+					continue;
+				}
+				File decompiled = new File(DECOMPILED_BASE_PATH+file.getPath().replace(UNPACKED_BASE_PATH, "").replace("dds", "png"));
+				File decompiledDir = new File(decompiled.getPath().replace(decompiled.getName(), ""));
+				if(!decompiledDir.exists())
+					decompiledDir.mkdirs();
+				if(decompiled.exists()) decompiled.delete();
+				decompiled.createNewFile();
+
+				FileOutputStream stream = new FileOutputStream(decompiled);
+
+				ImageIO.write(image, "PNG", stream);
+
+				stream.flush();
+				stream.close();
+
+				System.out.println("Decompiled: "+file.getPath());
+
+			} catch(Exception e) {
+				System.err.println("Error decompiling file: "+file.getPath());
+				e.printStackTrace();
+			}
+		}
+	}
 
 	public static void decompileDatasheets(File[] files) {
 		for(File file : files) {

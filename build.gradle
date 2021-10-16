@@ -12,6 +12,7 @@ repositories {
 allprojects {
     repositories {
         maven { url 'https://jitpack.io' }
+        maven { url 'https://maven.nikr.net' }
     }
 }
 
@@ -21,6 +22,7 @@ dependencies {
 
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'com.google.code.gson:gson:2.8.8'
+    implementation 'net.nikr:dds:1.0.0'
 }
 
 test {
