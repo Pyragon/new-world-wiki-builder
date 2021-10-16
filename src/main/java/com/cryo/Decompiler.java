@@ -29,11 +29,9 @@ public class Decompiler {
 		if(!unpackedBase.exists()) return;
 		File[] files = unpackedBase.listFiles();
 		if(files == null) return;
-//		decompileLua(Arrays.stream(files).filter(LUAC_FILTER).toArray(File[]::new));
-
-//		File toUnpack = new File("D:/workspace/github/NewWorldUnpacker/test");
-//		decompileDatasheets(Arrays.stream(toUnpack.listFiles()).filter(DATASHEET_FILTER).toArray(File[]::new));
+		decompileLua(Arrays.stream(files).filter(LUAC_FILTER).toArray(File[]::new));
 		decompileDatasheets(Arrays.stream(files).filter(DATASHEET_FILTER).toArray(File[]::new));
+
 	}
 
 	public static Predicate<File> LUAC_FILTER = f -> f.isDirectory() || FilenameUtils.getExtension(f.getName()).equals("luac");
@@ -43,7 +41,6 @@ public class Decompiler {
 
 	public static void decompileDatasheets(File[] files) {
 		for(File file : files) {
-			if(file.getName().equals(".git")) continue;
 			if(!file.exists()) continue;
 			if(file.isDirectory()) {
 				File[] subFiles = file.listFiles();
@@ -52,7 +49,6 @@ public class Decompiler {
 				continue;
 			}
 			try {
-				System.out.println("Attempting to decompile: "+file.getName());
 				FileInputStream stream = new FileInputStream(file);
 				byte[] data = stream.readAllBytes();
 				stream.close();
@@ -100,6 +96,7 @@ public class Decompiler {
 				decompiled.createNewFile();
 
 				BufferedWriter writer = new BufferedWriter(new FileWriter(decompiled));
+				System.out.println("Decompiled: "+file.getPath());
 				writer.append(json);
 				writer.flush();
 				writer.close();
