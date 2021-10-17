@@ -24,7 +24,7 @@ The datasheets are decompiled using the method found [here](https://gist.github.
 ## TODO
 
 * Extract and dump models
-* Find and extrat the strings file, getting all names/descriptions of items
+* Find and extract the strings file, getting all names/descriptions of items
 * Build wiki pages using information dumped
-* Create way to update existing wiki pages if they have not been updated by users yet.
+* Create way to update existing wiki pages if they have not been edited by users yet.
 * Flag updated wiki pages for manual review.
