@@ -19,7 +19,7 @@ allprojects {
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
-
+    implementation 'me.tongfei:progressbar:0.5.5'
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'com.google.code.gson:gson:2.8.8'
     implementation 'net.nikr:dds:1.0.0'

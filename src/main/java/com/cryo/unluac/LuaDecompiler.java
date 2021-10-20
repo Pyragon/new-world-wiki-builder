@@ -59,6 +59,16 @@ public class LuaDecompiler {
     }
     System.exit(1);
   }
+
+  private static LFunction file_to_function(byte[] data, Configuration config) throws IOException {
+
+    ByteBuffer buffer = ByteBuffer.wrap(data);
+    buffer.order(ByteOrder.LITTLE_ENDIAN);
+    buffer.rewind();
+    BHeader header = new BHeader(buffer, config);
+    return header.main;
+
+  }
   
   private static LFunction file_to_function(String fn, Configuration config) throws IOException {
     RandomAccessFile file = new RandomAccessFile(fn, "r");
@@ -70,6 +80,33 @@ public class LuaDecompiler {
     buffer.rewind();
     BHeader header = new BHeader(buffer, config);
     return header.main;
+  }
+
+  public static void decompile(byte[] data, String out) throws IOException {
+    LFunction lmain = file_to_function(data, new Configuration());
+    Decompiler d = new Decompiler(lmain);
+    d.decompile();
+    final PrintStream pout = new PrintStream(out);
+    d.print(new Output(new OutputProvider() {
+
+      @Override
+      public void print(String s) {
+        pout.print(s);
+      }
+
+      @Override
+      public void print(byte b) {
+        pout.print(b);
+      }
+
+      @Override
+      public void println() {
+        pout.println();
+      }
+
+    }));
+    pout.flush();
+    pout.close();
   }
   
   public static void decompile(String in, String out) throws IOException {
