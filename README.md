@@ -7,10 +7,11 @@ Attempts to build pages for WikiJS based around assets dumped from the New World
 
 This information may change as Amazon makes clear what information they are okay with, and what information they are not.
 
-Currently this builder is used for two things:
+Currently this builder is used for three things:
 
 * Decompiling lua scripts
 * Decompiling datasheets
+* Converting DDS images to PNG
 
 ### Decompiling LUA
 
