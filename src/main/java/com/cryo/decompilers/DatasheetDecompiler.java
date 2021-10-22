@@ -1,6 +1,6 @@
 package com.cryo.decompilers;
 
-import com.cryo.DecompilerAndBuilder;
+import com.cryo.NewWorldWikiBuilder;
 import com.cryo.io.InputStream;
 import org.apache.commons.io.FilenameUtils;
 
@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.function.BiPredicate;
 
 import static com.cryo.Constants.*;
-import static com.cryo.DecompilerAndBuilder.*;
+import static com.cryo.NewWorldWikiBuilder.*;
 
 public class DatasheetDecompiler extends Decompiler {
 
@@ -77,7 +77,7 @@ public class DatasheetDecompiler extends Decompiler {
 					rows.add(cellData);
 				}
 
-				String json = DecompilerAndBuilder.getGson().toJson(rows);
+				String json = NewWorldWikiBuilder.getGson().toJson(rows);
 				File decompiled = new File(DECOMPILED_BASE_PATH+file.getPath().replace(UNPACKED_BASE_PATH, "").replace("datasheet", "json"));
 				File decompiledDir = new File(decompiled.getPath().replace(decompiled.getName(), ""));
 				if(!decompiledDir.exists())

@@ -1,9 +1,15 @@
 plugins {
     id 'java'
+    id 'application'
 }
+
+mainClassName = "com.cryo.NewWorldWikiBuilder"
 
 group 'com.cryo.NewWorldWikiBuilder'
 version '1.0.0'
+
+sourceCompatibility = '17'
+targetCompatibility = '17'
 
 repositories {
     mavenCentral()

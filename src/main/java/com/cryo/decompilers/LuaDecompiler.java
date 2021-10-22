@@ -4,14 +4,11 @@ import org.apache.commons.io.FilenameUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Arrays;
 import java.util.function.BiPredicate;
-import java.util.function.Predicate;
 
-import static com.cryo.DecompilerAndBuilder.*;
+import static com.cryo.NewWorldWikiBuilder.*;
 
 public class LuaDecompiler extends Decompiler {
 

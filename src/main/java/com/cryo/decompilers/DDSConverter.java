@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiPredicate;
 
-import static com.cryo.DecompilerAndBuilder.*;
+import static com.cryo.NewWorldWikiBuilder.*;
 
 public class DDSConverter extends Decompiler {
 
@@ -34,7 +34,7 @@ public class DDSConverter extends Decompiler {
 		for(Path path : paths) {
 			File file = path.toFile();
 			try {
-				if(file.getName().matches(".*?\\.\\d+") || Arrays.stream(paths).anyMatch(p -> p.getFileName().toString().matches(".*?\\.\\d+"))) {
+				if(file.getName().matches(".*?\\.\\d+") || Arrays.stream(file.getParentFile().listFiles()).anyMatch(f -> f.getName().matches(".*?\\.\\d+"))) {
 					String name = file.getPath().substring(0, file.getPath().indexOf(".dds"));
 					if(!checkedFiles.containsKey(name))
 						checkedFiles.put(name, new byte[0]);
@@ -46,13 +46,14 @@ public class DDSConverter extends Decompiler {
 					continue;
 				}
 				bar.step();
+				File decompiled = new File(DECOMPILED_BASE_PATH+file.getPath().replace(UNPACKED_BASE_PATH, "").replace("dds", "png"));
+				File decompiledDir = new File(decompiled.getPath().replace(decompiled.getName(), ""));
+				if(decompiled.exists()) continue;
 				BufferedImage image = ImageIO.read(file);
 				if(image == null) {
 					System.err.println("Unable to read file: "+file.getPath());
 					continue;
 				}
-				File decompiled = new File(DECOMPILED_BASE_PATH+file.getPath().replace(UNPACKED_BASE_PATH, "").replace("dds", "png"));
-				File decompiledDir = new File(decompiled.getPath().replace(decompiled.getName(), ""));
 				if(!decompiledDir.exists())
 					decompiledDir.mkdirs();
 				if(decompiled.exists()) decompiled.delete();
@@ -92,6 +93,7 @@ public class DDSConverter extends Decompiler {
 
 				stream.flush();
 				stream.close();
+				arrayStream.close();
 			} catch(Exception e) {
 				e.printStackTrace();
 			}
