@@ -2,6 +2,7 @@ package com.cryo;
 
 import com.cryo.builders.Builder;
 import com.cryo.builders.ItemDefinitionsBuilder;
+import com.cryo.builders.RecipeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -23,7 +24,9 @@ public class WikiBuilder {
 	public static void buildWiki() {
 
 		loadLocalizationFiles();
-		ItemDefinitionsBuilder.loadTemplateFile();
+		ItemDefinitionsBuilder.loadItemDefinitions();
+		ItemDefinitionsBuilder.loadCSSTemplate();
+		RecipeBuilder.loadRecipes();
 
 		List<Builder> builders = new ArrayList<>() {{
 			add(new ItemDefinitionsBuilder());
@@ -68,6 +71,8 @@ public class WikiBuilder {
 
 						String key = element.getAttribute("key");
 						localizationStrings.put(key, node.getTextContent());
+						if(key.equals("1hSwordT2_FTUE_Description"))
+							System.out.println("Found it: "+node.getTextContent());
 					}
 
 				}
