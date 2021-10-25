@@ -7,11 +7,12 @@ Attempts to build pages for WikiJS based around assets dumped from the New World
 
 This information may change as Amazon makes clear what information they are okay with, and what information they are not.
 
-Currently this builder is used for three things:
+Currently this builder is used for:
 
 * Decompiling lua scripts
 * Decompiling datasheets
 * Converting DDS images to PNG
+* Building item definition pages
 
 ### Decompiling LUA
 
@@ -26,10 +27,14 @@ The datasheets are decompiled using the method found [here](https://gist.github.
 
 This project will convert all dds and dds.# files into PNGs. This is a very lengthy process. Will in the future add a way to skip these.
 
+### Building Item Definition Pages
+
+The project will atempt to build some wikipedia pages based on the information that can be obtained from the above dumped files.
+Currently, we build only Item Definition pages, and are working on getting the styling a bit better.
+These pages include relevent information on the item, including recipes that it can be used in, and stats for the item.
+
 ## TODO
 
 * Extract and dump models
-* Find and extract the strings file, getting all names/descriptions of items. (Stored in the XML?)
-* Build wiki pages using information dumped. (Look up GraphQL APIs)
 * Create way to update existing wiki pages if they have not been edited by users yet.
 * Flag updated wiki pages for manual review.
