@@ -1,2 +1,4 @@
 rootProject.name = 'new-world-decompiler'
+include ':CryoConnection'
 
+project(':CryoConnection').projectDir = new File("../CryoConnection")

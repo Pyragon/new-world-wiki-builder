@@ -9,7 +9,7 @@ public class Utils {
 
 	public static String getTimestamp() {
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.US);
-		format.setTimeZone(TimeZone.getTimeZone("PST"));
+		format.setTimeZone(TimeZone.getTimeZone("UTC"));
 		return format.format(new Date());
 	}
 }

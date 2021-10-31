@@ -1,0 +1,45 @@
+h1 Crafting Recipe
+
+.crafting-recipe
+    .crafting-bg
+    .recipe-side
+        .item-container
+            .item-image-container
+                .item-rarity(style='color: '+recipe.getRecipeItemDefinitions().getRarityColour())= recipe.getRecipeItemDefinitions().getRarityString()
+                .item-tier TIER
+                    span
+                        img(src=recipe.getRecipeItemDefinitions().getTierImage())
+                .item-bg(style='background-image: url(/itemlayout/crafting_itemraritybglarge'+recipe.getRecipeItemDefinitions().getForceRarity()+'.png)')
+                    img.item-image(src=recipe.getRecipeItemDefinitions().getBigImagePath())
+            .item-name-container
+                .item-name(style='color: '+recipe.getRecipeItemDefinitions().getRarityColour())= recipe.getRecipeItemDefinitions().getLocalName().toUpperCase()
+                .item-description= recipe.getRecipeItemDefinitions().getLocalDescription()
+        .clear
+        .separator-horizontal
+        .ingredients-side
+            for item in recipe.getRecipeItems()
+                .ingredient-line
+                    .ingredient-img(style='background-image: url(/itemlayout/crafting_itemraritybg'+recipe.getRecipeItemDefinitions().getForceRarity()+'.png)')
+                        img(src=item.getDefs().getImagePath())
+                        span.ingredient= item.getQuantity()+' '
+                            span= item.getDefs().getLocalName()
+                .clear
+        .separator-vertical
+        .perks-side
+    .info-side
+        .info-title POTENTIAL GEAR SCORE
+        if recipe.getRecipeItemDefinitions().getMinGearScore() > 0
+            .gear-score= recipe.getRecipeItemDefinitions().getMinGearScore()+'-'+recipe.getRecipeItemDefinitions().getMaxGearScore()
+        .requirements-container
+            .requirement-title Requirements
+            .separator-horizontal.requirement-separator
+            .recipe-station-container
+                for i in [0, 1, 2, 3]
+                    if recipe.getStationTypes()[i] != null && recipe.getStationTypes()[i] != ''
+                        .recipe-station-line
+                            img(src=recipe.getStationImage(i))
+                            span= recipe.getStationText(i)
+                .recipe-station-line
+                    img(src=recipe.getTradeSkillImage())
+                    span= recipe.getTradeSkillText()
+        .recipe-xp= '+'+recipe.getXp()+' '+recipe.getTradeSkill()

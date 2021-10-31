@@ -1,0 +1,214 @@
+.crafting-recipe {
+    width: 870px;
+    height: 630px;
+    border: 1px solid #000;
+    margin-top: 10px;
+}
+
+.crafting-bg {
+    background-image: url(/itemlayout/mappanel_territory15.png);
+    background-size: cover;
+    filter: blur(15px);
+    -webkit-filter: blur(15px);
+    position: absolute;
+    width: 870px;
+    height: 630px;
+}
+
+.recipe-side {
+    float: left;
+    width: 60%;
+    height: 100%;
+    filter: blur(0px);
+    -webkit-filter: blur(0px);
+}
+
+.info-side {
+    float: left;
+    width: 40%;
+    height: 100%;
+    background-image: url(/recipes/craftingstatbg.png);
+    filter: blur(0px);
+    -webkit-filter: blur(0px);
+}
+
+.info-title {
+    margin-left: 30px;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.gear-score {
+    margin-left: 30px;
+    margin-top: -5px;
+    color: white;
+    font-size: 30px;
+    font-family: caslonantique;
+}
+
+.item-tier {
+    font-family: 'De Soto Bold';
+    position: relative;
+    left: 25px;
+    top: 20px;
+    font-size: 12px;
+    color: #bbb;
+    letter-spacing: 3px;
+}
+
+.item-tier img {
+    margin-left: 5px;
+    padding-top: 1px;
+    height: 11px;
+}
+
+.item-rarity {
+    color: orange;
+    position: relative;
+    top: 20px;
+    left: 25px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.item-name {
+    color: orange;
+    position: relative;
+    top: 15px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.requirement-title {
+    position: relative;
+    top: 420px;
+    left: 40px;
+    font-size: 13px;
+    color: #bbb;
+}
+
+.item-image-container {
+    float: left;
+}
+
+.item-bg {
+    position: relative;
+    width: 183px;
+    left: 27px;
+    top: 10px;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.recipe-xp {
+    color: #ffd70075;
+    position: relative;
+    font-size: 13px;
+    text-align: center;
+    top: 490px;
+}
+
+.ingredients-side {
+    width: 50%;
+    margin-left: 40px;
+    margin-top: 20px;
+}
+
+.ingredient-line {
+    margin-bottom: 10px;
+}
+
+.item-image {
+    width: 250px;
+}
+
+.item-name-container {
+    float: right;
+}
+
+.item-description {
+    position: relative;
+    font-style: italic;
+    font-family: 'Segoe UI';
+    font-size: 12px;
+    color: #A89975;
+    width: 301px;
+    top: 30px;
+}
+
+.ingredient-img img {
+    width: 40px;
+}
+
+.ingredient-img {
+    background-repeat: no-repeat;
+    background-size: 40px;
+}
+
+.ingredient {
+    color: white;
+    font-size: 13px;
+    font-family: caslonantique;
+    position: relative;
+    top: -15px;
+    left: 15px;
+    letter-spacing: 2px;
+}
+
+.recipe-station-container {
+    position: relative;
+    top: 417px;
+    left: 30px;
+    color: #2FDFA8;
+    font-weight: bold;
+}
+
+.recipe-station-container img {
+    width: 35px;
+}
+
+.recipe-station-container span {
+    position: relative;
+    top: -12px;
+    left: -5px;
+    font-size: 14px;
+}
+
+.ingredient span {
+    color: #bbb;
+    font-family: Roboto;
+    letter-spacing: normal;
+}
+
+.requirement-separator {
+    width: 275px !important;
+    position: relative;
+    top: 420px;
+    left: 10px;
+}
+
+.separator-horizontal {
+    background-image: url(/itemlayout/crafting_drawnline_stronger.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 460px;
+    height: 1px;
+    margin-left: 30px;
+}
+
+.item-container {
+    background-image: url(/itemlayout/crafting_image_bg.png);
+    height: 170px;
+}
+
+@font-face {
+    font-family: 'caslonantique';
+    src: url(/fonts/caslonantique.ttf);
+}
+
+@font-face {
+    font-family: 'De Soto Bold';
+    src: url(/fonts/DeSotoBold.ttf);
+}

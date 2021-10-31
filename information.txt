@@ -1,0 +1,15 @@
+Recipes:
+    https://i.imgur.com/NuPEfNZ.png
+    https://i.imgur.com/W1Tao0M.png
+
+Pictures in the background:
+    Runes:
+        lyshineui/images/banner/banner_runebiga
+        lyshineui/images/banner/banner_runebigb
+        lyshineui/images/banner/banner_runebigc
+
+
+Other:
+    slices/sectionheader = separators?
+
+Put this somewhere on footer: <a href="http://www.onlinewebfonts.com">oNline Web Fonts</a>

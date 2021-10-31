@@ -1,0 +1,210 @@
+package com.cryo.entities;
+
+import com.google.gson.internal.LinkedTreeMap;
+import lombok.Data;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.stream.Collectors;
+
+@Data
+public class ItemStats {
+
+	private final String materialOverride4;
+	private final String materialOverride3;
+	private final String iconPath;
+	private final String resistances;
+	private final String statMultipliers;
+	private final double aBAFrostbite;
+	private final String equipmentCategoryMultiplier;
+	private final double armorRatingScaleFactor;
+	private final String ammoMesh;
+	private final double bLAArcane;
+    private final boolean canBlockRanged;
+	private final String weaponEffectId;
+	private final double bLASlash;
+	private final String primaryUse;
+	private final double reticleRayCastDistance;
+	private final double DEVPrio;
+	private final String statBonuses;
+	private final String weaponID;
+	private final String damageStatMultiplier;
+	private final String meshOverride;
+	private final String skinOverride2;
+	private final String skinOverride1;
+	private final double aBABleed;
+	private final String reticleName;
+	private final String skinOverride4;
+	private final String skinOverride3;
+	private final String weaknesses;
+	private final double bLANature;
+	private final String mannequinTag;
+	private final String audioPlace;
+	private final String manaCostId;
+	private final double requiredFocus;
+	private final double baseDamage;
+	private final double tierNumber;
+	private final double bLAStandard;
+	private final String ammoType;
+	private final double requiredIntelligence;
+	private final String gatheringTypes;
+	private final double maxStackSize;
+	private final double baseAccuracy;
+	private final double bLAIce;
+	private final String damageTableRow;
+	private final String disablePerksOnSheathe;
+	private final double requiredStrength;
+	private final double bLACorruption;
+	private final String materialOverride2;
+	private final String materialOverride1;
+	private final double weightOverride;
+	private final double baseStaggerDamage;
+	private final double critDamageMultiplier;
+	private final String weaponMasteryCategoryId;
+	private final double deflectionRating;
+	private final double physicalArmorSetScaleFactor;
+	private final double blockStaminaDamage;
+	private final double bLAFire;
+	private final String animDbPath;
+	private final double critChance;
+	private final String tooltipPrimaryAttackData;
+	private final double requiredDexterity;
+	private final double aBADisease;
+	private final String audioPickup;
+	private final String rangedAttackProfile;
+	private final double bLAThrust;
+	private final String primaryHand;
+	private final String attackGameEventID;
+	private final double maxGatherEFF;
+	private final String attachedSpellData;
+	private final String tooltipAlternateAttackData;
+	private final double aBAPoison;
+	private final String equipmentCategories;
+	private final double bLALightning;
+	private final double bLASiege;
+	private final String equipType;
+	private final double bLAStrike;
+	private final double critStaggerDamageMultiplier;
+	private final double aBACurse;
+	private final String fireJoint;
+	private final String appearance;
+	private final String femaleAppearance;
+	private final double gatheringMultiplier;
+	private final String reticleTargetName;
+	private final String offHandMannequinTag;
+	private final double elementalArmorSetScaleFactor;
+	private final double blockStability;
+	private final double maxLoadedAmmo;
+	private final String baseWeaponID;
+	private final double gatheringEfficiency;
+	private final double minGatherEFF;
+
+	private final HashMap<String, Double> scaling;
+
+	private final String[] SCALING_STATS = { "Strength", "Dexterity", "Intelligence", "Focus" };
+	
+	public ItemStats(LinkedTreeMap<String, Object> map) {
+		scaling = new HashMap<>();
+		for(String stat : SCALING_STATS)
+			scaling.put(stat, (double) map.get("Scaling"+stat));
+		materialOverride4 = (String) map.get("MaterialOverride4");
+		materialOverride3 = (String) map.get("MaterialOverride3");
+		iconPath = (String) map.get("IconPath");
+		resistances = (String) map.get("Resistances");
+		statMultipliers = (String) map.get("StatMultipliers");
+		aBAFrostbite = (double) map.get("ABAFrostbite");
+		equipmentCategoryMultiplier = (String) map.get("EquipmentCategoryMultiplier");
+		armorRatingScaleFactor = (double) map.get("ArmorRatingScaleFactor");
+		ammoMesh = (String) map.get("AmmoMesh");
+		bLAArcane = (double) map.get("BLAArcane");
+		canBlockRanged = (boolean) map.get("CanBlockRanged");
+		weaponEffectId = (String) map.get("WeaponEffectId");
+		bLASlash = (double) map.get("BLASlash");
+		primaryUse = (String) map.get("PrimaryUse");
+		reticleRayCastDistance = (double) map.get("ReticleRayCastDistance");
+		DEVPrio = (double) map.get("DEV Prio");
+		statBonuses = (String) map.get("StatBonuses");
+		weaponID = (String) map.get("WeaponID");
+		damageStatMultiplier = (String) map.get("DamageStatMultiplier");
+		meshOverride = (String) map.get("MeshOverride");
+		skinOverride2 = (String) map.get("SkinOverride2");
+		skinOverride1 = (String) map.get("SkinOverride1");
+		aBABleed = (double) map.get("ABABleed");
+		reticleName = (String) map.get("ReticleName");
+		skinOverride4 = (String) map.get("SkinOverride4");
+		skinOverride3 = (String) map.get("SkinOverride3");
+		weaknesses = (String) map.get("Weaknesses");
+		bLANature = (double) map.get("BLANature");
+		mannequinTag = (String) map.get("MannequinTag");
+		audioPlace = (String) map.get("AudioPlace");
+		manaCostId = (String) map.get("ManaCostId");
+		requiredFocus = (double) map.get("RequiredFocus");
+		baseDamage = (double) map.get("BaseDamage");
+		tierNumber = (double) map.get("TierNumber");
+		bLAStandard = (double) map.get("BLAStandard");
+		ammoType = (String) map.get("AmmoType");
+		requiredIntelligence = (double) map.get("RequiredIntelligence");
+		gatheringTypes = (String) map.get("GatheringTypes");
+		maxStackSize = (double) map.get("MaxStackSize");
+		baseAccuracy = (double) map.get("BaseAccuracy");
+		bLAIce = (double) map.get("BLAIce");
+		damageTableRow = (String) map.get("DamageTableRow");
+		disablePerksOnSheathe = (String) map.get("DisablePerksOnSheathe");
+		requiredStrength = (double) map.get("RequiredStrength");
+		bLACorruption = (double) map.get("BLACorruption");
+		materialOverride2 = (String) map.get("MaterialOverride2");
+		materialOverride1 = (String) map.get("MaterialOverride1");
+		weightOverride = (double) map.get("WeightOverride");
+		baseStaggerDamage = (double) map.get("BaseStaggerDamage");
+		critDamageMultiplier = (double) map.get("CritDamageMultiplier");
+		weaponMasteryCategoryId = (String) map.get("WeaponMasteryCategoryId");
+		deflectionRating = (double) map.get("DeflectionRating");
+		physicalArmorSetScaleFactor = (double) map.get("PhysicalArmorSetScaleFactor");
+		blockStaminaDamage = (double) map.get("BlockStaminaDamage");
+		bLAFire = (double) map.get("BLAFire");
+		animDbPath = (String) map.get("AnimDbPath");
+		critChance = (double) map.get("CritChance");
+		tooltipPrimaryAttackData = (String) map.get("TooltipPrimaryAttackData");
+		requiredDexterity = (double) map.get("RequiredDexterity");
+		aBADisease = (double) map.get("ABADisease");
+		audioPickup = (String) map.get("AudioPickup");
+		rangedAttackProfile = (String) map.get("RangedAttackProfile");
+		bLAThrust = (double) map.get("BLAThrust");
+		primaryHand = (String) map.get("Primary Hand");
+		attackGameEventID = (String) map.get("AttackGameEventID");
+		maxGatherEFF = (double) map.get("MaxGatherEFF");
+		attachedSpellData = (String) map.get("AttachedSpellData");
+		tooltipAlternateAttackData = (String) map.get("TooltipAlternateAttackData");
+		aBAPoison = (double) map.get("ABAPoison");
+		equipmentCategories = (String) map.get("EquipmentCategories");
+		bLALightning = (double) map.get("BLALightning");
+		bLASiege = (double) map.get("BLASiege");
+		equipType = (String) map.get("EquipType");
+		bLAStrike = (double) map.get("BLAStrike");
+		critStaggerDamageMultiplier = (double) map.get("CritStaggerDamageMultiplier");
+		aBACurse = (double) map.get("ABACurse");
+		fireJoint = (String) map.get("FireJoint");
+		appearance = (String) map.get("Appearance");
+		femaleAppearance = (String) map.get("FemaleAppearance");
+		gatheringMultiplier = (double) map.get("GatheringMultiplier");
+		reticleTargetName = (String) map.get("ReticleTargetName");
+		offHandMannequinTag = (String) map.get("OffHandMannequinTag");
+		elementalArmorSetScaleFactor = (double) map.get("ElementalArmorSetScaleFactor");
+		blockStability = (double) map.get("BlockStability");
+		maxLoadedAmmo = (double) map.get("MaxLoadedAmmo");
+		baseWeaponID = (String) map.get("BaseWeaponID");
+		gatheringEfficiency = (double) map.get("GatheringEfficiency");
+		minGatherEFF = (double) map.get("MinGatherEFF");
+	}
+
+	public String getScalesWithText() {
+		ArrayList<String> scales = new ArrayList<>();
+		for(String stat : SCALING_STATS) {
+			if(scaling.get(stat) > 0)
+				scales.add(stat);
+		}
+		if(scales.isEmpty()) return null;
+		return String.join(", ", scales);
+	}
+
+}

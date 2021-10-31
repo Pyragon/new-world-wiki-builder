@@ -28,27 +28,35 @@ public class DDSConverter extends Decompiler {
 		return (path, attr) -> FilenameUtils.getExtension(path.getFileName().toString()).equals("dds") || FilenameUtils.getExtension(path.getFileName().toString()).matches("\\d+");
 	}
 
-	@Override
-	public void decompile(Path[] paths) {
+	public void decompileDir(File[] files) {
 		Map<String, byte[]> checkedFiles = new HashMap<>();
-		for(Path path : paths) {
-			File file = path.toFile();
-			try {
-				if(file.getName().matches(".*?\\.\\d+") || Arrays.stream(file.getParentFile().listFiles()).anyMatch(f -> f.getName().matches(".*?\\.\\d+"))) {
+		try {
+			for (File file : files) {
+				if (file.isDirectory()) {
+					decompileDir(file.listFiles());
+					continue;
+				}
+				if(!file.getName().contains(".dds")) continue;
+				bar.step();
+				File decompiled = new File(DECOMPILED_BASE_PATH+file.getPath().replace(UNPACKED_BASE_PATH, "").replace("dds", "png"));
+				if(decompiled.exists()) continue;
+				if (file.getName().matches(".*?\\.\\d+") || Arrays.stream(file.getParentFile().listFiles()).anyMatch(f -> {
+					if (f.getName().equals(file.getName())) return false;
+					if (!f.getName().contains(".dds")) return false;
+					String name1NoExt = f.getName().substring(0, f.getName().indexOf(".dds"));
+					String name2NoExt = file.getName().substring(0, file.getName().indexOf(".dds"));
+					return name1NoExt.equals(name2NoExt);
+				})) {
 					String name = file.getPath().substring(0, file.getPath().indexOf(".dds"));
-					if(!checkedFiles.containsKey(name))
-						checkedFiles.put(name, new byte[0]);
+					if (!checkedFiles.containsKey(name)) checkedFiles.put(name, new byte[0]);
 					FileInputStream in = new FileInputStream(file);
 					byte[] data = checkedFiles.get(name);
 					data = add(data, in.readAllBytes());
+					in.close();
 					checkedFiles.put(name, data);
-					if(!file.getName().matches(".*?\\.\\d+")) bar.step();
 					continue;
 				}
-				bar.step();
-				File decompiled = new File(DECOMPILED_BASE_PATH+file.getPath().replace(UNPACKED_BASE_PATH, "").replace("dds", "png"));
 				File decompiledDir = new File(decompiled.getPath().replace(decompiled.getName(), ""));
-				if(decompiled.exists()) continue;
 				BufferedImage image = ImageIO.read(file);
 				if(image == null) {
 					System.err.println("Unable to read file: "+file.getPath());
@@ -65,39 +73,42 @@ public class DDSConverter extends Decompiler {
 
 				stream.flush();
 				stream.close();
-
-			} catch(Exception e) {
-				System.err.println("Error decompiling file: "+file.getPath());
-				e.printStackTrace();
 			}
-		}
-		for(String path : checkedFiles.keySet()) {
-			try {
-				File decompiled = new File(DECOMPILED_BASE_PATH + path.replace(UNPACKED_BASE_PATH, "") + ".png");
-				File decompiledDir = new File(decompiled.getPath().replace(decompiled.getName(), ""));
-				if (!decompiledDir.exists()) decompiledDir.mkdirs();
-				if (decompiled.exists()) decompiled.delete();
-				decompiled.createNewFile();
+			for(String path : checkedFiles.keySet()) {
+				try {
+					File decompiled = new File(DECOMPILED_BASE_PATH + path.replace(UNPACKED_BASE_PATH, "") + ".png");
+					File decompiledDir = new File(decompiled.getPath().replace(decompiled.getName(), ""));
+					if (!decompiledDir.exists()) decompiledDir.mkdirs();
+					if (decompiled.exists()) decompiled.delete();
+					decompiled.createNewFile();
 
-				ByteArrayInputStream arrayStream = new ByteArrayInputStream(checkedFiles.get(path));
+					ByteArrayInputStream arrayStream = new ByteArrayInputStream(checkedFiles.get(path));
 
-				BufferedImage image = ImageIO.read(arrayStream);
-				if(image == null) {
-					System.err.println("Unable to read file: "+path);
-					continue;
+					BufferedImage image = ImageIO.read(arrayStream);
+					if(image == null) {
+						System.err.println("Unable to read file: "+path);
+						continue;
+					}
+
+					FileOutputStream stream = new FileOutputStream(decompiled);
+
+					ImageIO.write(image, "PNG", stream);
+
+					stream.flush();
+					stream.close();
+					arrayStream.close();
+				} catch(Exception e) {
+					e.printStackTrace();
 				}
-
-				FileOutputStream stream = new FileOutputStream(decompiled);
-
-				ImageIO.write(image, "PNG", stream);
-
-				stream.flush();
-				stream.close();
-				arrayStream.close();
-			} catch(Exception e) {
-				e.printStackTrace();
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void decompile(Path[] paths) {
+		decompileDir(new File(UNPACKED_BASE_PATH).listFiles());
 	}
 
 	public static byte[] add(byte[] src, byte[] toAdd) {

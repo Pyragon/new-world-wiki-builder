@@ -1,0 +1,39 @@
+h1= quest.getLocalTitle()
+
+.quest
+    .quest-bg
+    .quest-dark-bg
+    .quest-info
+        img.quest-icon(src='https://new-world.wiki/objectives/icon_objective_quest.png')
+        .quest-name= quest.getLocalTitle().toUpperCase()
+        .quest-location= 'Weaver\'s Fen '
+            span.quest-location-sep -
+            span.quest-location-level  Level 30
+        .quest-description= quest.getLocalDescription()
+    .quest-separator(style='top: 92px; left: 320px;')
+    .quest-info
+        .quest-info-title INFO
+    .quest-separator(style='top: 92px; left: 720px;')
+    .quest-rewards
+        .quest-reward-title REWARDS
+        .quest-xp
+            img.quest-xp-icon.reward-icon(src='https://new-world.wiki/icons/icon_xp.png')
+            .quest-xp-value.reward-value= quest.getSuccessGameEvent().getXPFormatted()
+                span.quest-xp-title.reward-title  XP
+        .quest-coin
+            img.quest-coin-icon.reward-icon(src='https://new-world.wiki/objectives/reward_coin.png')
+            .quest-coin-value.reward-value= quest.getSuccessGameEvent().getCoinRewardFormatted()
+                span.quest-coin-title.reward-title  Coin
+        .quest-azoth
+            img.quest-azoth-icon.reward-icon(src='https://new-world.wiki/icons/icon_azoth.png')
+            .quest-azoth-value.reward-value= quest.getSuccessGameEvent().getAzothReward()
+                span.quest-azoth-title.reward-title  Azoth
+        if quest.getSuccessGameEvent().getItemReward() != ''
+            .quest-reward-item
+                .quest-reward-item-background(style=quest.getRewardItemBackgroundImage())
+                .quest-reward-item-icon
+                    img(src=quest.getItemReward().getBigImagePath())
+                .quest-reward-item-tier
+                    img(src=quest.getItemReward().getTierImage())
+                .quest-reward-item-quantity 1
+h1 Quest Line

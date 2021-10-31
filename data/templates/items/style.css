@@ -1,0 +1,184 @@
+div#item-box {
+    float: right;
+    min-width: 360px;
+    max-width: 360px;
+    background: #000
+}
+
+#item-box div:last-of-type {
+    padding-bottom: 10px;
+}
+
+.item-box-img-banner {
+    height: 90px
+}
+
+.item-box-img-container {
+    position: relative;
+    left: 5px;
+    top: 5px;
+    height: 80px;
+    width: 80px;
+    float: left;
+}
+
+.gear-score {
+    font-family: caslonantique;
+    padding: 5px !important;
+    margin-left: 10px !important;
+    font-size: 45px;
+    float: left;
+}
+
+.gear-score-title {
+    float: left;
+    color: #bbb;
+    white-space: pre-wrap;
+    width: 70px;
+    line-height: 16px;
+    margin-top: 20px;
+}
+
+.item-damage-stats-container {
+    float: left;
+    height: 80px;
+}
+
+.item-name {
+    margin-top: 5px;
+    margin-left: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.item-type {
+    position: relative;
+    bottom: -30px;
+    left: 10px;
+    font-size: 15px;
+}
+
+.item-rarity {
+    position: absolute;
+    right: 10px;
+    bottom: -35px;
+}
+
+#wiki-content {
+    float: left;
+    width: calc(100% - 370px)
+}
+
+.description-container p {
+    font-style: italic;
+    font-family: 'Segoe UI';
+    font-size: 16px;
+    margin-left: 15px !important;
+    color: #A89975;
+    padding-top: 10px !important;
+}
+
+.derive-container p {
+    padding-top: 5px !important;
+    margin-left: 15px !important;
+    color: #bbb;
+    font-size: 16px;
+}
+
+.bind-stat {
+    color: #25BA8A;
+    font-weight: bold;
+}
+
+.item-stat-title {
+    color: #bbb;
+    font-weight: normal;
+}
+
+.item-stat-img img {
+    height: 15px;
+    width: 17px;
+    color: #bbb;
+}
+
+.first-stat {
+    margin-top: 0px !important;
+    margin-left: 15px !important;
+    font-size: 16px;
+}
+
+.item-stat-value {
+    color: white;
+    font-weight: bold;
+}
+
+.derive-container span {
+    color: white;
+}
+
+.item-box-value-title {
+    border-right: 1px solid #000;
+    font-size: 11px;
+    float: left;
+    width: 50%;
+    min-height: 25px
+}
+
+.item-box-value {
+    font-size: 11px;
+    float: right;
+    width: 50%;
+    min-height: 25px;
+    text-align: center
+}
+
+.clear {
+    clear: both
+}
+
+.tradeskill-icon {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: #000
+}
+
+.table-container {
+    background-color: #111;
+    border-radius: 5px;
+    border: 1px solid #000;
+    width: 50%
+}
+
+.table-container table {
+    margin: 0!important
+}
+
+.item-stats-container {
+    float: left;
+}
+
+th {
+    height: 20px;
+    width: 150px;
+    text-align: center;
+    padding: 10px !important
+}
+
+td {
+    height: 20px;
+    width: 150px;
+    padding: 5px !important;
+    text-align: center
+}
+
+.separator {
+    background-image: url(/itemlayout/separator.png);
+    height: 30px;
+    width: 350px;
+}
+
+@font-face {
+    font-family: caslonantique;
+    src: url(/fonts/caslonantique.ttf);
+}

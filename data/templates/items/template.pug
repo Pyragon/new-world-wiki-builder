@@ -1,0 +1,103 @@
+h1= item.getLocalName()
+
+p= item.getLocalDescription()
+
+#wiki-content
+    if obtained != null && obtained.size() > 0
+        h1 Sources
+        table.table-container
+            tr
+                th Recipe
+                th Trade
+                th Level
+            for recipe in obtained
+                tr
+                    td(style='width: 250px;')
+                        .tradeskill-icon-container
+                            img.tradeskill-icon(src=recipe.getRecipeItemDefinitions().getImagePath()) 
+                            span= ' Recipe: '+recipe.getRecipeItemDefinitions().getLocalName()
+                    td
+                        .tradeskill-icon-container(title=recipe.getTradeSkill())
+                            img.tradeskill-icon(src='https://new-world.wiki/tradeskills/'+recipe.getTradeSkill().toLowerCase()+'.png')
+                    td= recipe.getRequiredLevel()
+    if usedIn != null && usedIn.size() > 0
+        #crafting-recipes
+            h1 Crafting Recipes
+            #crafting-recipes-content
+                table.table-container
+                    tr 
+                        th Recipe
+                        th Trade
+                        th Level
+                    for recipe in usedIn
+                        tr
+                            td(style='width: 200px;')
+                                .tradeskill-icon-container
+                                    img.tradeskill-icon(src=recipe.getRecipeItemDefinitions().getImagePath()) 
+                                    span= ' Recipe: '+recipe.getRecipeItemDefinitions().getLocalName()
+                            td
+                                .tradeskill-icon-container(title=recipe.getTradeSkill())
+                                    img.tradeskill-icon(src='https://new-world.wiki/tradeskills/'+recipe.getTradeSkill().toLowerCase()+'.png')
+                            td= recipe.getRequiredLevel()
+
+#item-box
+    .item-box-img-banner(style='background-image: url(/itemlayout/tooltip_header_bg_'+item.getForceRarity()+'.png);')
+        .item-box-img-container(style=item.getRarityItemBackground())
+            img.item-box-img(src=item.getImagePath())
+        .item-stats-container
+            .item-name(style='color: '+item.getRarityColour())= item.getLocalName()
+            .item-type= item.getLocalType()
+            .item-rarity(style='color: '+item.getRarityStringColour())= item.getRarityString()
+        .clear
+    if item.getMinGearScore() > 0
+        .gear-score-container
+            if item.getMinGearScore() == item.getMaxGearScore()
+                p.gear-score= item.getMinGearScore()
+            else
+                p.gear-score= item.getMinGearScore()+'-'+item.getMaxGearScore()
+            .gear-score-title Gear Score
+            .clear 
+        .item-stat-value.first-stat= (item.getStats().getCritChance() * 100)+'%'
+            span.item-stat-title  Critical Hit Chance
+        .item-stat-value.first-stat=item.getStats().getCritDamageMultiplier()
+            span.item-stat-title  Critical Damage Multiplier
+        .item-stat-value.first-stat=item.getStats().getBlockStaminaDamage()
+            span.item-stat-title  Critical Block Stamina Damage
+        .item-stat-value.first-stat=item.getStats().getBlockStability()+'%'
+            span.item-stat-title  Blocking Stability
+        .separator
+        .damage-container
+        .separator
+        .perk-container
+        .spearator
+    .description-container
+        p= item.getLocalDescription()
+    if item.getTooltips() != null && item.getTooltips().getLocalDerivedFromText() != null && item.getTooltips().getLocalDerivedFromText() != ''
+        .derive-container
+            p Derived from: 
+                span= item.getTooltips().getLocalDerivedFromText()
+    .separator
+    if item.isBindOnPickup()
+        .bind-stat.first-stat Bind On Pickup
+    else if item.isBindOnEquip()
+        .bind-stat.first-stat Bind On Equip
+    .item-stat-title.first-stat(style=(item.isBindOnPickup() || item.isBindOnEquip) ? '' : 'margin-top: -5px !important;') Tier
+        span.item-stat-value= ' '+item.getTierString()
+    if item.getStats() != null && item.getStats().getScalesWithText() != null
+        .item-stat-title.first-stat Scales with 
+            span.item-stat-value= item.getStats().getScalesWithText()
+    .item-stat-value.first-stat= item.getWeight()
+        span.item-stat-title  Weight 
+        span.item-stat-img
+            img(src='https://new-world.wiki/icons/icon_weight.png')
+    if item.getDurability() > 0
+        .item-stat-value.first-stat= item.getDurability()
+            span.item-stat-title  Durability
+    if item.getRequiredLevel() > 0
+        .item-stat-title.first-stat Requirement: Level 
+            span.item-stat-value= item.getRequiredLevel()
+    if item.getMaxStackSize() != 1
+        .item-stat-title.first-stat Max Stack
+            span.item-stat-value= ' '+item.getMaxStackSize()
+            span.item-stat-img
+                img(src='https://new-world.wiki/icons/icon_storage.png', style='width: 20px; height: 20px;')

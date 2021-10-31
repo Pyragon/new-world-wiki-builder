@@ -1,0 +1,194 @@
+.quest {
+    width: 1000px;
+    height: 230px;
+    margin-top: 10px;
+}
+
+.quest-bg {
+    background-image: url(/itemlayout/mappanel_territory15.png);
+    background-size: cover;
+    filter: blur(15px);
+    -webkit-filter: blur(15px);
+    width: 1000px;
+    height: 230px;
+    position: absolute;
+}
+
+.quest-dark-bg {
+    background-color: #000;
+    opacity: 0.6;
+    width: 1000px;
+    height: 230px;
+    position: absolute;
+}
+
+.quest-separator {
+    background-image: url(/itemlayout/crafting_drawnline_stronger.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 1px;
+    height: 460px;
+    position: absolute;
+}
+
+.quest-icon {
+    width: 35px;
+    position: absolute;
+    top: 90px;
+    left: 25px;
+}
+
+.quest-name {
+    font-family: 'De Soto';
+    color: #DFE060;
+    position: absolute;
+    top: 90px;
+    left: 63px;
+    letter-spacing: 3px;
+    font-size: 19px;
+    width: 255px;
+    line-height: 20px;
+}
+
+.quest-location-sep {
+    color: #bbb;
+}
+
+.quest-location-level {
+    color: darkorange;
+}
+
+.quest-description {
+    position: absolute;
+    top: 190px;
+    left: 30px;
+    width: 235px;
+    font-size: 16px;
+    color: #878888;
+    line-height: 21px;
+}
+
+.quest-location {
+    color: white;
+    position: absolute;
+    top: 145px;
+    left: 30px;
+}
+
+.quest-task-title {
+    position: absolute;
+    top: 90px;
+    left: 356px;
+    font-family: 'De Soto';
+    color: #6D6757;
+    letter-spacing: 1px;
+    font-size: 13px;
+}
+
+.quest-reward-title {
+    position: absolute;
+    top: 90px;
+    left: 750px;
+    font-size: 12px;
+    font-family: 'De Soto';
+    color: #6D6757;
+    letter-spacing: 1px;
+    font-size: 13px;
+}
+
+.quest-xp-icon {
+    left: 750px;
+    top: 120px;
+    position: absolute;
+}
+
+.quest-xp-value {
+    left: 780px;
+    top: 119px;
+    position: absolute;
+}
+
+.quest-coin-icon {
+    left: 750px;
+    top: 155px;
+    position: absolute;
+}
+
+.quest-coin-value {
+    left: 780px;
+    top: 154px;
+    position: absolute;
+}
+
+.quest-azoth-icon {
+    left: 750px;
+    top: 190px;
+    position: absolute;
+}
+
+.quest-azoth-value {
+    left: 780px;
+    top: 189px;
+    position: absolute;
+}
+
+.reward-value {
+    color: #C1B79C;
+    font-family: caslonantique;
+    font-size: 20px;
+    letter-spacing: 1px;
+}
+
+.reward-title {
+    color: #6D6757;
+    font-family: 'Segoe UI';
+    font-size: 16px;
+    letter-spacing: normal;
+}
+
+.quest-reward-item-background {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    top: -500px;
+    left: 750px;
+    width: 80px;
+    height: 80px;
+}
+
+.quest-reward-item-quantity {
+    position: relative;
+    top: -635px;
+    width: 140px;
+    left: 810px;
+    font-family: 'De Soto';
+    font-size: 23px;
+}
+
+.quest-reward-item-icon {
+    position: relative;
+    top: -575px;
+    width: 140px;
+    left: 720px;
+}
+
+.reward-icon {
+    width: 25px;
+}
+
+@font-face {
+    font-family: 'caslonantique';
+    src: url(/fonts/caslonantique.ttf);
+}
+
+@font-face {
+    font-family: 'De Soto Bold';
+    src: url(/fonts/DeSotoBold.ttf);
+}
+
+@font-face {
+    font-family: 'De Soto';
+    src: url(/fonts/DeSoto.ttf);
+}

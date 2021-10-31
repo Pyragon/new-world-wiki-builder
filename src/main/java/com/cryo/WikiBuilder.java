@@ -2,7 +2,9 @@ package com.cryo;
 
 import com.cryo.builders.Builder;
 import com.cryo.builders.ItemDefinitionsBuilder;
+import com.cryo.builders.QuestsBuilder;
 import com.cryo.builders.RecipeBuilder;
+import com.cryo.loaders.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -26,10 +28,19 @@ public class WikiBuilder {
 		loadLocalizationFiles();
 		ItemDefinitionsBuilder.loadItemDefinitions();
 		ItemDefinitionsBuilder.loadCSSTemplate();
+		QuestsBuilder.loadCSSTemplate();
+		RecipeBuilder.loadCSSTemplate();
+		ItemStatsList.buildItemStats();
+		ObjectiveTasks.loadObjectiveTasks();
+		Objectives.loadObjectives();
+		GameEvents.loadEvents();
+		Tooltips.loadTooltips();
 		RecipeBuilder.loadRecipes();
 
 		List<Builder> builders = new ArrayList<>() {{
 			add(new ItemDefinitionsBuilder());
+			add(new RecipeBuilder());
+			add(new QuestsBuilder());
 		}};
 
 		builders.forEach(Builder::build);
@@ -71,8 +82,6 @@ public class WikiBuilder {
 
 						String key = element.getAttribute("key");
 						localizationStrings.put(key, node.getTextContent());
-						if(key.equals("1hSwordT2_FTUE_Description"))
-							System.out.println("Found it: "+node.getTextContent());
 					}
 
 				}

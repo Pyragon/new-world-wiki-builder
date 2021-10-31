@@ -1,10 +1,13 @@
 package com.cryo.entities;
 
 import com.cryo.builders.ItemDefinitionsBuilder;
+import com.cryo.loaders.GameEvents;
 import com.google.gson.internal.LinkedTreeMap;
 import lombok.Data;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Data
 public class Recipe {
@@ -131,5 +134,53 @@ public class Recipe {
 			if(defs.getItemID().equals(recipeId)) return defs;
 		}
 		return null;
+	}
+
+	public String getStationImage(int index) {
+		if(index < 0 || index >= stationTypes.length) return "";
+		String type = stationTypes[index];
+		if(type == null || type.equals("")) return "";
+		return "https://new-world.wiki/worldmap/worldmap_"+type.substring(0, type.length()-1)+".png";
+	}
+
+	public String getStationText(int index) {
+		if(index < 0 || index >= stationTypes.length) return "";
+		String type = stationTypes[index];
+		if(type == null || type.equals("")) return "";
+		return type.substring(0, 1).toUpperCase() + type.substring(1, type.length() - 1) + " Station Tier " + type.substring(type.length() - 1);
+	}
+
+	public String getTradeSkillImage() {
+		return "https://new-world.wiki/tradeskills/"+tradeSkill.toLowerCase()+".png";
+	}
+
+	public String getTradeSkillText() {
+		return tradeSkill+" Skill Lv. "+requiredLevel;
+	}
+
+	public GameEvent getGameEvent() {
+		return GameEvents.getEvent(gameEventID);
+	}
+
+	public int getXp() {
+		GameEvent event = getGameEvent();
+		if(event == null) return 0;
+		double progressionXp = event.getCategoricalProgressionReward();
+		int total = Arrays.stream(quantities).sum();
+		return (int) progressionXp * total;
+	}
+
+	public List<RecipeItem> getRecipeItems() {
+		List<RecipeItem> items = new ArrayList<>();
+		for(int i = 0; i < ingredients.length; i++) {
+			String ingredient = ingredients[i];
+			if(ingredient == null || ingredient.equals(""))
+				continue;
+			ItemDefinitions defs = ItemDefinitionsBuilder.getItemDefinitionsById().get(ingredient);
+			if(defs == null) continue;
+			RecipeItem item = new RecipeItem(defs, types[i], quantities[i]);
+			items.add(item);
+		}
+		return items;
 	}
 }

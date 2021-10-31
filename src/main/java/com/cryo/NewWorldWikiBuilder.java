@@ -54,9 +54,8 @@ public class NewWorldWikiBuilder {
 //				Path[] paths = Files.find(Paths.get(UNPACKED_BASE_PATH), Integer.MAX_VALUE, decompiler.getFilter()).toArray(Path[]::new);
 //				ProgressBar bar = new ProgressBar(decompiler.getProgressBarName(), paths.length);
 //				decompiler.setProgressBar(bar);
-//				bar.start();
 //				decompiler.decompile(paths);
-//				bar.stop();
+//				bar.close();
 //			}
 
 			WikiBuilder.buildWiki();

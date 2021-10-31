@@ -1,8 +1,18 @@
 package com.cryo.entities;
 
 import com.cryo.WikiBuilder;
+import com.cryo.builders.ItemDefinitionsBuilder;
+import com.cryo.builders.RecipeBuilder;
+import com.cryo.loaders.ObjectiveTasks;
+import com.cryo.utils.AssetUtils;
+import com.cryo.loaders.ItemStatsList;
+import com.cryo.loaders.Tooltips;
 import com.google.gson.internal.LinkedTreeMap;
 import lombok.Data;
+
+import java.io.File;
+import java.util.List;
+import java.util.Locale;
 
 @Data
 public class ItemDefinitions {
@@ -74,7 +84,7 @@ public class ItemDefinitions {
 	private final boolean consumeOnUse;
 	private final String warboardGatherStat;
 	private final String salvageAchievement;
-	private final double forceRarity;
+	private final int forceRarity;
 	private final boolean isUniqueItem;
 	private final boolean aDyeSlotDisabled;
 	private final String confirmDestroy;
@@ -176,7 +186,7 @@ public class ItemDefinitions {
 		warboardGatherStat = (String) map.get("WarboardGatherStat");
 		salvageAchievement = (String) map.get("SalvageAchievement");
 		o = map.get("ForceRarity");
-		forceRarity = o instanceof Double ? (double) o : 0.0;
+		forceRarity = o instanceof Double ? ((Double) o).intValue() : 0;
 		o = map.get("IsUniqueItem");
 		isUniqueItem = o instanceof Boolean && (boolean) o;
 		aDyeSlotDisabled = (boolean) map.get("ADyeSlotDisabled");
@@ -196,7 +206,123 @@ public class ItemDefinitions {
 		deathDropPercentage = (double) map.get("DeathDropPercentage");
 	}
 
+	public ItemStats getStats() {
+		return ItemStatsList.getStats(itemStatsRef);
+	}
+
+	public String getTierImage() {
+		return "https://new-world.wiki/itemlayout/crafting_tier_"+tier+".png";
+	}
+
+	public String getBigImagePath() {
+		String name = "big_"+this.iconPath.toLowerCase();
+		String path = AssetUtils.getImagePath(name);
+		if(path != null) return path;
+
+		File file = new File("D:/workspace/github/NewWorldUnpacker/decompiled/lyshineui/images/icons/items_hires/" + iconPath.toLowerCase() + ".png");
+		if(!file.exists()) {
+			System.out.println(iconPath.toLowerCase());
+			return "";
+		}
+
+		boolean result = AssetUtils.uploadImage(name, null, file);
+		if(!result) {
+			System.out.println("No result");
+			return "";
+		}
+		path = AssetUtils.getImagePath(name);
+		return path;
+	}
+
+	public String getImagePath() {
+		String name = this.iconPath.toLowerCase();
+		String path = AssetUtils.getImagePath(name);
+		if(path != null) return path;
+
+		boolean result = AssetUtils.uploadImage(name, null, new File(ItemDefinitionsBuilder.ITEM_ICONS_PATH + "/" + itemType.toLowerCase() + "/" + iconPath.toLowerCase() + ".png"));
+		if(!result) {
+			System.out.println("No result");
+			return "";
+		}
+		path = AssetUtils.getImagePath(name);
+		return path;
+	}
+
+	public ObjectiveTask getTask() {
+		return ObjectiveTasks.getTask(itemID);
+	}
+
+	public Tooltip getTooltips() {
+		return Tooltips.getTooltip(itemID);
+	}
+
+	public String getLocalType() {
+		return WikiBuilder.localizationStrings.get(itemTypeDisplayName.replace("@", ""));
+	}
+
 	public String getLocalName() {
 		return WikiBuilder.localizationStrings.get(name.replace("@", ""));
+	}
+
+	public String getLocalDescription() {
+		return WikiBuilder.localizationStrings.get(description.replace("@", ""));
+	}
+
+	public List<Recipe> getUsedIn() {
+		return RecipeBuilder.getUsedIn(itemID);
+	}
+
+	public List<Recipe> getObtainedFrom() {
+		return RecipeBuilder.getObtainedFrom(itemID);
+	}
+
+	public String getRarityBackground() {
+		return switch(forceRarity) {
+			case 1 -> "background: linear-gradient(#211810, #0B3B0B);";
+			default -> "background: linear-gradient(#211810, #8A4B08);";
+		};
+	}
+
+	public String getRarityItemBackground() {
+		return switch(forceRarity) {
+			case 1 -> "border: 1px solid #60CD4F;";
+			default -> "border: 1px solid orange;";
+		};
+	}
+
+	public String getRarityColour() {
+		return switch(forceRarity) {
+			case 1 -> "#22E752";
+			case 2 -> "#0CC9C9";
+			default -> "orange";
+		};
+	}
+
+	public String getRarityStringColour() {
+		return switch(forceRarity) {
+			case 1 -> "#22E752";
+			case 2 -> "#0CC9C9";
+			default -> "orange";
+		};
+	}
+
+	public String getRarityString() {
+		return switch(forceRarity) {
+			case 1 -> "Uncommon";
+			case 2 -> "Rare";
+			case 3 -> "Epic";
+			case 4 -> "Legendary";
+			default -> "Common";
+		};
+	}
+
+	public String getTierString() {
+		return switch(tier) {
+			case 2 -> "II";
+			case 3 -> "III";
+			case 4 -> "IV";
+			case 5 -> "V";
+			default -> "I";
+		};
 	}
 }

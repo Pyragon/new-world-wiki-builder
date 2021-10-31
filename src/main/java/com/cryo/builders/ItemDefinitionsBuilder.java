@@ -1,5 +1,6 @@
 package com.cryo.builders;
 
+import ch.simschla.minify.adapter.Minifier;
 import com.cryo.DBConnection;
 import com.cryo.NewWorldWikiBuilder;
 import com.cryo.WikiBuilder;
@@ -8,31 +9,44 @@ import com.cryo.utils.Utils;
 import com.google.gson.internal.LinkedTreeMap;
 import de.neuland.pug4j.Pug4J;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.io.output.ByteArrayOutputStream;
+import org.apache.commons.lang3.ArrayUtils;
 import org.postgresql.util.PGobject;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
+import java.io.*;
 import java.util.*;
 
 public class ItemDefinitionsBuilder extends Builder {
 
 	private static final String ITEM_DEFINITIONS_PATH = "D:/workspace/github/NewWorldUnpacker/decompiled/sharedassets/springboardentitites/datatables/";
-	private static final String ITEM_ICONS_PATH = "D:/workspace/github/NewWorldUnpacker/decompiled/lyshineui/images/icons/items";
+	public static final String ITEM_ICONS_PATH = "D:/workspace/github/NewWorldUnpacker/decompiled/lyshineui/images/icons/items";
 
 	private static HashMap<String, ItemDefinitions> itemDefinitions;
+	private static HashMap<String, ItemDefinitions> itemDefinitionsById;
 
 	private static String CSS;
+
+	private static String MINIFIED_CSS;
 
 	@Override
 	public void build() {
 
 		DBConnection connection = NewWorldWikiBuilder.getConnection();
 
-		connection.delete("pages", "id != ? AND id != ?", 1, 13207);
-		connection.delete("assets", "id != ? AND id != ?", 1, 2);
-		connection.delete("assetData", "id != ? AND id != ?", 1, 2);
+		connection.delete("pages", "path LIKE ?", "items/%");
+
+		record NameId(String name, String id) {}
+
+		List<NameId> toRemove = new ArrayList<>();
+		for(ItemDefinitions defs : itemDefinitions.values()) {
+			if(defs.getName().contains("Crafted"))
+				toRemove.add(new NameId(defs.getName().replace("Crafted", ""), defs.getItemID()));
+		}
+
+		for(NameId remove : toRemove) {
+			itemDefinitions.remove(remove.name);
+			itemDefinitionsById.remove(remove.id);
+		}
 
 		try {
 			for (ItemDefinitions defs : itemDefinitions.values()) {
@@ -43,7 +57,7 @@ public class ItemDefinitionsBuilder extends Builder {
 				name = WikiBuilder.localizationStrings.get(name);
 				final String displayName = name;
 
-				if(!displayName.equalsIgnoreCase("Runic Thread")) continue;
+				if(!displayName.equalsIgnoreCase("Protective Wyrd Shoes")) continue;
 
 				String description = defs.getDescription().replace("@", "");
 				description = WikiBuilder.localizationStrings.getOrDefault(description, "");
@@ -53,21 +67,37 @@ public class ItemDefinitionsBuilder extends Builder {
 
 				HashMap<String, Object> model = new HashMap<>();
 
-				model.put("item", itemDefinitions);
+				model.put("item", defs);
 
 				String path = "items/" + itemTypeName.toLowerCase().replace(" ", "-") + "/" + displayName.replace(" ", "_").replace(":", "");
 
-				String recipeId = defs.getCraftingRecipe();
-				if (!recipeId.equals("")) {
-					if (RecipeBuilder.recipes.containsKey(recipeId)) {
-						Recipe recipe = RecipeBuilder.recipes.get(recipeId);
-						if(recipe.getRecipeNameOverride().equals("")) continue;
-						model.put("recipe", recipe);
-						System.out.println("Put recipe in: " + displayName + ". Link: http://new-world.wiki/en/" + path);
-					} else {
-						System.err.println("Missing recipe: " + recipeId + " for Item: " + displayName);
-						continue;
-					}
+				ArrayList<Properties> props = new ArrayList<>();
+
+				Properties nameProp = new Properties();
+				nameProp.put("title", displayName);
+				nameProp.put("anchor", "#" + displayName.toLowerCase().replace(" ", "-"));
+				nameProp.put("children", new ArrayList<Properties>());
+				props.add(nameProp);
+
+				List<Recipe> obtained = defs.getObtainedFrom();
+				List<Recipe> usedIn = defs.getUsedIn();
+				if(obtained != null && obtained.size() > 0) {
+					Properties dropSources = new Properties();
+					dropSources.put("title", "Sources");
+					dropSources.put("anchor", "#sources");
+					dropSources.put("children", new ArrayList<Properties>());
+					props.add(dropSources);
+
+					model.put("obtained", obtained);
+				}
+				if(usedIn != null && usedIn.size() > 0) {
+					Properties craftingRecipes = new Properties();
+					craftingRecipes.put("title", "Crafting Recipes");
+					craftingRecipes.put("anchor", "#crafting-recipes");
+					craftingRecipes.put("children", new ArrayList<Properties>());
+					props.add(craftingRecipes);
+
+					model.put("usedIn", usedIn);
 				}
 
 				File imageFile = new File(ITEM_ICONS_PATH + "/" + defs.getItemType().toLowerCase() + "/" + defs.getIconPath().toLowerCase() + ".png");
@@ -76,47 +106,13 @@ public class ItemDefinitionsBuilder extends Builder {
 					continue;
 				}
 
-				model.put("imgSrc", "http://new-world.wiki/" + imageFile.getName());
-
 				String html;
 				try {
-					html = Pug4J.render("data/item_defs_template.pug", model);
+					html = Pug4J.render("data/templates/items/template.pug", model);
 				} catch(Exception e) {
 					e.printStackTrace();
 					continue;
 				}
-
-				FileInputStream in = new FileInputStream(imageFile);
-				byte[] data = in.readAllBytes();
-
-				in.close();
-
-				Asset asset = new Asset(-1, imageFile.getName(), DigestUtils.sha1Hex(imageFile.getName()), ".png", "image", "image/png", data.length, null, "", "", null, 5);
-				int id = connection.insert("assets", asset);
-
-				AssetData assetData = new AssetData(id, data);
-				connection.insert("assetData", assetData);
-
-				ArrayList<Properties> props = new ArrayList<>();
-
-				Properties nameProp = new Properties();
-				nameProp.put("title", displayName);
-				nameProp.put("anchor", "#" + displayName.toLowerCase().replace(" ", "-"));
-				nameProp.put("children", new ArrayList<Properties>());
-
-				Properties dropSources = new Properties();
-				dropSources.put("title", "Sources");
-				dropSources.put("anchor", "#sources");
-				dropSources.put("children", new ArrayList<Properties>());
-
-				Properties craftingRecipes = new Properties();
-				craftingRecipes.put("title", "Crafting Recipes");
-				craftingRecipes.put("anchor", "#crafting-recipes");
-				craftingRecipes.put("children", new ArrayList<Properties>());
-
-				props.add(nameProp);
-				props.add(dropSources);
-				props.add(craftingRecipes);
 
 				String entriesJSON = NewWorldWikiBuilder.getGson().toJson(props);
 
@@ -126,7 +122,7 @@ public class ItemDefinitionsBuilder extends Builder {
 
 				PGobject json = new PGobject();
 				json.setType("json");
-				json.setValue("{\"js\":\"\",\"css\":\""+CSS+"\"}");
+				json.setValue("{\"js\":\"\",\"css\":\""+MINIFIED_CSS+"\"}");
 
 				connection.delete("pages", "path=?", path);
 
@@ -152,7 +148,7 @@ public class ItemDefinitionsBuilder extends Builder {
 				connection.insert("pageTags", itemTypeTag);
 
 				System.out.println("Built: "+displayName+" Link: http://new-world.wiki/en/"+path);
-				return;
+//				return;
 			}
 
 		} catch (Exception e) {
@@ -165,8 +161,12 @@ public class ItemDefinitionsBuilder extends Builder {
 		return itemDefinitions;
 	}
 
+	public static HashMap<String, ItemDefinitions> getItemDefinitionsById() {
+		return itemDefinitionsById;
+	}
+
 	public static void loadCSSTemplate() {
-		File file = new File("data/style.css");
+		File file = new File("data/templates/items/style.css");
 
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -175,7 +175,17 @@ public class ItemDefinitionsBuilder extends Builder {
 			while((line = reader.readLine()) != null) builder.append(line);
 			reader.close();
 
-			CSS = builder.toString().replace("}\s{", "}{");
+			CSS = builder.toString();
+
+			Minifier minifier = Minifier.CSS;
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+
+			InputStream in = new ByteArrayInputStream(CSS.getBytes());
+			minifier.minify(in, out, null, null);
+
+			in.close();
+			MINIFIED_CSS = new String(out.toByteArray());
+
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -187,6 +197,7 @@ public class ItemDefinitionsBuilder extends Builder {
 		if (files == null) return;
 
 		itemDefinitions = new HashMap<>();
+		itemDefinitionsById = new HashMap<>();
 		for (File file : files) {
 			try {
 				if (!file.getName().contains("itemdefinitions_master")) continue;
@@ -203,7 +214,7 @@ public class ItemDefinitionsBuilder extends Builder {
 
 					ItemDefinitions defs = new ItemDefinitions(map);
 					itemDefinitions.put(defs.getName(), defs);
-//					System.out.println(defs.getName());
+					itemDefinitionsById.put(defs.getItemID(), defs);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
